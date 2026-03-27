@@ -22,34 +22,13 @@ function initSkillBars() {
       const skillLevel = bar.getAttribute("data-skill");
       bar.style.width = skillLevel + "%";
 
-      // Add percentage display
+      // Add percentage display if not exists
       const parent = bar.parentElement;
       if (parent && !parent.querySelector(".skill-percentage")) {
         const percentage = document.createElement("span");
         percentage.className = "skill-percentage";
         percentage.textContent = skillLevel + "%";
-        percentage.style.cssText = `
-          position: absolute;
-          right: 5px;
-          top: -20px;
-          font-size: 12px;
-          font-weight: 600;
-          color: var(--primary);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        `;
-
-        parent.style.position = "relative";
         parent.appendChild(percentage);
-
-        // Show percentage on hover
-        parent.addEventListener("mouseenter", function () {
-          percentage.style.opacity = "1";
-        });
-
-        parent.addEventListener("mouseleave", function () {
-          percentage.style.opacity = "0";
-        });
       }
     });
   }
@@ -193,7 +172,7 @@ function initHeaderScroll() {
           header.style.boxShadow = "var(--shadow-sm)";
         }
 
-        // Hide/show header on scroll (optional)
+        // Hide/show header on scroll
         if (currentScrollY > lastScrollY && currentScrollY > 200) {
           header.style.transform = "translateY(-100%)";
         } else if (currentScrollY < lastScrollY || currentScrollY <= 200) {
@@ -267,7 +246,7 @@ function initCertificateAnimations() {
   });
 }
 
-// Form Validation (for future contact forms)
+// Form Validation
 function initFormValidation() {
   const contactForm = document.getElementById("contact-form");
 
@@ -278,7 +257,6 @@ function initFormValidation() {
       const formData = new FormData(this);
       const data = Object.fromEntries(formData);
 
-      // Basic validation
       let isValid = true;
       const email = data.email;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -299,7 +277,6 @@ function initFormValidation() {
       }
 
       if (isValid) {
-        // Simulate form submission
         showNotification("Message sent successfully! I'll get back to you soon.", "success");
         this.reset();
       }
@@ -309,7 +286,6 @@ function initFormValidation() {
 
 // Notification System
 function showNotification(message, type = "info") {
-  // Remove any existing notification
   const existingNotification = document.querySelector(".notification");
   if (existingNotification) {
     existingNotification.remove();
@@ -318,34 +294,16 @@ function showNotification(message, type = "info") {
   const notification = document.createElement("div");
   notification.className = `notification notification-${type}`;
   notification.textContent = message;
-  notification.style.cssText = `
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    padding: 12px 20px;
-    border-radius: var(--radius-lg);
-    color: white;
-    font-weight: 500;
-    z-index: 10000;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    box-shadow: var(--shadow-lg);
-    max-width: 350px;
-  `;
 
-  // Set background color based on type
-  const bgColor =
-    type === "success" ? "#4ECDC4" : type === "error" ? "#FF6B6B" : "#2A4B7C";
+  const bgColor = type === "success" ? "#4ECDC4" : type === "error" ? "#FF6B6B" : "#2A4B7C";
   notification.style.background = bgColor;
 
   document.body.appendChild(notification);
 
-  // Animate in
   setTimeout(() => {
     notification.style.transform = "translateX(0)";
   }, 100);
 
-  // Remove after 3 seconds
   setTimeout(() => {
     notification.style.transform = "translateX(100%)";
     setTimeout(() => {
@@ -356,7 +314,7 @@ function showNotification(message, type = "info") {
   }, 3000);
 }
 
-// Typewriter Effect for Hero Section
+// Typewriter Effect
 function initTypewriterEffect() {
   const heroSubtitle = document.querySelector(".hero-subtitle");
 
@@ -374,7 +332,6 @@ function initTypewriterEffect() {
       }
     };
 
-    // Start typing when hero section is in view
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -396,28 +353,9 @@ function initTypewriterEffect() {
 
 // Back to Top Button
 function initBackToTop() {
-  // Create back to top button
   const backToTop = document.createElement("button");
   backToTop.className = "back-to-top";
   backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
-  backToTop.style.cssText = `
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 45px;
-    height: 45px;
-    background: var(--gradient-primary);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 999;
-    box-shadow: var(--shadow-md);
-    font-size: 18px;
-  `;
   document.body.appendChild(backToTop);
 
   window.addEventListener("scroll", function () {
@@ -469,101 +407,20 @@ function initActiveNavHighlight() {
   highlightActiveLink();
 }
 
-// Add CSS for additional styles
-const additionalStyles = document.createElement("style");
-additionalStyles.textContent = `
-  /* Active navigation link */
-  .nav-links a.active {
-    color: var(--primary);
-  }
-  
-  .nav-links a.active::after {
-    width: 100%;
-  }
-  
-  /* Back to top button hover */
-  .back-to-top:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-  }
-  
-  /* Mobile menu improvements */
-  @media (max-width: 768px) {
-    .nav-links {
-      position: fixed;
-      top: 70px;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(10px);
-      flex-direction: column;
-      padding: var(--spacing-lg);
-      box-shadow: var(--shadow-lg);
-      display: none;
-      z-index: 999;
-      max-height: calc(100vh - 70px);
-      overflow-y: auto;
+// Button loading state
+document.querySelectorAll(".btn").forEach((btn) => {
+  btn.addEventListener("click", function (e) {
+    if (this.href === "#" || !this.href || this.getAttribute("href") === "#") {
+      e.preventDefault();
+
+      const originalText = this.innerHTML;
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+      this.disabled = true;
+
+      setTimeout(() => {
+        this.innerHTML = originalText;
+        this.disabled = false;
+      }, 2000);
     }
-    
-    .nav-links li {
-      margin: var(--spacing-sm) 0;
-    }
-    
-    .nav-links a {
-      display: block;
-      padding: var(--spacing-sm);
-      border-radius: var(--radius-md);
-      transition: all var(--transition-normal);
-    }
-    
-    .nav-links a:hover,
-    .nav-links a.active {
-      background: var(--light);
-      color: var(--primary);
-    }
-    
-    .nav-links a::after {
-      display: none;
-    }
-  }
-  
-  /* Skill bar percentage */
-  .skill-bar {
-    position: relative;
-  }
-  
-  /* Certificate card hover effect */
-  .certificate-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  /* Project links styling */
-  .project-links {
-    display: flex;
-    gap: var(--spacing-md);
-    margin: var(--spacing-md) 0;
-    flex-wrap: wrap;
-  }
-  
-  .project-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--primary);
-    text-decoration: none;
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    transition: var(--transition-normal);
-  }
-  
-  .project-link:hover {
-    color: var(--secondary);
-    transform: translateX(5px);
-  }
-  
-  /* Notification styling */
-  .notification {
-    font-size: var(--font-size-sm);
-  }
-`;
-document.head.appendChild(additionalStyles);
+  });
+});
