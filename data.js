@@ -15,7 +15,7 @@ window.PORTFOLIO = {
     links: {
       github: "https://github.com/AshishChaubey2003",
       linkedin: "https://www.linkedin.com/in/ashishchaubey2dec/",
-      resume: "./Ashish_kr_chaubey.pdf",
+      resume:"https://drive.google.com/file/d/120FebuFvrTjrejOLp1rIBCBpKEmnUEBN/view?usp=sharing",
     },
   },
 
